@@ -1,9 +1,8 @@
 from django.urls import path
-
-from .views import index, room
-
+from .api import CreateRetrieveConversationView, ListConversationsView
 
 urlpatterns = [
-    path("", index, name="index"),
-    path("<str:room_name>/", room, name="room"),
+    path("start/", CreateRetrieveConversationView.as_view()),
+    path("<int:convo_id>/", CreateRetrieveConversationView.as_view()),
+    path("", ListConversationsView.as_view()),
 ]

@@ -6,8 +6,6 @@ from .serializers import OrganizationSeralizer, RetrieveOrganizationSerializer
 
 
 class CreateOrganizationView(CreateAPIView):
-
-    model = Organization
     permission_classes = [
         IsAuthenticated,
     ]
@@ -15,7 +13,6 @@ class CreateOrganizationView(CreateAPIView):
 
 
 class RetrieveOrganizationView(RetrieveAPIView):
-
     model = Organization
     permission_classes = [
         IsAuthenticated,

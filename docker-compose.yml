@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    container_name: app
+    command: python app/manage.py runserver 0.0.0.0:8001
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    ports:
+      - 8001:8001
+    depends_on:
+      - postgres
+      - redis
+
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - 6380:6379
+    volumes:
+      - cache:/data
+    env_file:
+      - .env
+  
+  postgres:
+    image: postgres:latest
+    restart: always
+    container_name: postgres
+    env_file:
+      - .env
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    
+    ports:
+      - 5433:5432
+
+volumes:
+  pg-data:
+  cache:

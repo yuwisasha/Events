@@ -1,26 +1,27 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, SerializerMethodField
 
 from .models import Organization
 from users.serializers import UserSerializer
 
-class OrganizationSeralizer(ModelSerializer):
 
+class OrganizationSeralizer(ModelSerializer):
     class Meta:
         model = Organization
-        fields = '__all__'
+        fields = "__all__"
 
 
 class RetrieveOrganizationSerializer(ModelSerializer):
-
     users = UserSerializer(many=True, read_only=True)
+    full_address = SerializerMethodField()
+
+    def get_full_address(self, instance):
+        return '{} {}'.format(instance.address, instance.postcode)
 
     class Meta:
         model = Organization
         fields = (
-            'title',
-            'description',
-            'address',
-            'postcode',
-            'users',
+            "title",
+            "description",
+            "full_address",
+            "users",
         )
-

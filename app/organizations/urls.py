@@ -4,5 +4,5 @@ from .api import CreateOrganizationView
 
 
 urlpatterns = [
-    path('create_organization/', CreateOrganizationView.as_view()),
+    path("create_organization/", CreateOrganizationView.as_view()),
 ]

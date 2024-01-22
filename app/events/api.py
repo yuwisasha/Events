@@ -3,14 +3,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.pagination import LimitOffsetPagination
 from django_filters.rest_framework import DjangoFilterBackend
- 
+
 from .models import Event
 from .serializers import EventSerializer, RetrieveEventSerializer
 
 
 class CreateEventView(CreateAPIView):
-
-    model = Event
     permission_classes = [
         IsAuthenticated,
     ]
@@ -18,8 +16,6 @@ class CreateEventView(CreateAPIView):
 
 
 class RetrieveEventView(RetrieveAPIView):
-
-    model = Event
     permission_classes = [
         IsAuthenticated,
     ]
@@ -28,11 +24,9 @@ class RetrieveEventView(RetrieveAPIView):
 
 
 class ListEventView(ListAPIView):
-
-    model = Event
-    permission_classes = [
-        IsAuthenticated,
-    ]
+    # permission_classes = [
+    #     IsAuthenticated,
+    # ]
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     filter_backends = [
@@ -41,8 +35,12 @@ class ListEventView(ListAPIView):
         DjangoFilterBackend,
     ]
     filterset_fields = {
-        "date": ['gte', 'lte'],
+        "date": ["gte", "lte"],
     }
-    search_fields = ['title',]
-    ordering_fields = ['date',]
+    search_fields = [
+        "title",
+    ]
+    ordering_fields = [
+        "date",
+    ]
     pagination_class = LimitOffsetPagination

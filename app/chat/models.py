@@ -1,15 +1,46 @@
 from django.db import models
+from django.conf import settings
 
-from users.models import User
+
+class Conversation(models.Model):
+    initiator = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="convo_starter",
+    )
+    receiver = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="convo_participant",
+    )
+    start_time = models.DateTimeField(
+        auto_now_add=True,
+    )
 
 
 class Message(models.Model):
-
-    user = models.ForeignKey(
-        User,
+    sender = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="message_sender",
+    )
+    text = models.CharField(
+        max_length=200,
+        blank=True,
+    )
+    attachment = models.FileField(
+        blank=True,
+    )
+    conversation_id = models.ForeignKey(
+        Conversation,
         on_delete=models.CASCADE,
     )
-    message = models.TextField()
+    timestamp = models.DateTimeField(
+        auto_now_add=True,
+    )
 
-    def __str__(self):
-        return self.message
+    class Meta:
+        ordering = ("-timestamp",)
